@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ru.Imagio.ViewModel;
 
 namespace Ru.Imagio.View
 {
@@ -22,6 +23,16 @@ namespace Ru.Imagio.View
         public SignView()
         {
             InitializeComponent();
+        }
+
+        private SignViewModel _context;
+
+        private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (_context == null)
+                _context = DataContext as SignViewModel;
+            if (_context != null) 
+                _context.Password = PasswordBox.Password;
         }
     }
 }

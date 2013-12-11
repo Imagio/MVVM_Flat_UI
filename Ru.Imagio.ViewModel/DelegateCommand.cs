@@ -8,9 +8,9 @@ using Ru.Imagio.ViewModel.Annotations;
 
 namespace Ru.Imagio.ViewModel
 {
-    public class DelegeateCommand : DelegateCommand<object>
+    public class DelegateCommand : DelegateCommand<object>
     {
-        public DelegeateCommand(Action<object> execute, Predicate<object> canExecute = null, Action<Exception> exception = null)
+        public DelegateCommand(Action<object> execute, Predicate<object> canExecute = null, Action<Exception> exception = null)
             : base(
                 o =>
                 {

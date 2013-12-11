@@ -29,10 +29,12 @@
             </Grid.ColumnDefinitions>
 
             <Label Style="{StaticResource FormLabel}" Grid.Row="2" Grid.Column="0">Имя пользователя</Label>
-            <TextBox Grid.Row="2" Grid.Column="1" Width="220"></TextBox>
+            <TextBox Grid.Row="2" Grid.Column="1" Width="220" Text="{Binding Login, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             <Label Style="{StaticResource FormLabel}" Grid.Row="4" Grid.Column="0">Пароль</Label>
-            <PasswordBox Grid.Row="4" Grid.Column="1" Width="220"></PasswordBox>
+            <PasswordBox Grid.Row="4" Grid.Column="1" Width="220" PasswordChanged="PasswordBox_OnPasswordChanged"
+                         x:Name="PasswordBox"></PasswordBox>
             <Button Grid.Column="1" Grid.Row="6" Command="{Binding SignCommand}"
+                    Height="40" Width="100"
                     HorizontalAlignment="Left" Margin="0 0 0 10">Войти</Button>
         </Grid>
     </Grid>

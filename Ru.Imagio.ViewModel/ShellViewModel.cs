@@ -29,13 +29,18 @@ namespace Ru.Imagio.ViewModel
         {
             get
             {
-                if (UserID == 0)
-                {
-                    var signViewModel = new SignViewModel();
-                    return signViewModel;
-                }
-                return null;
+                if (UserID != 0) 
+                    return new WorkspaceShell();
+                var signViewModel = new SignViewModel();
+                signViewModel.SignComplete += SignViewModelOnSignComplete;
+                return signViewModel;
             }
+        }
+
+        private void SignViewModelOnSignComplete(object sender, SignViewModel.SignEventArgs signEventArgs)
+        {
+            UserID = signEventArgs.UserId;
+            OnPropertyChanged("ActiveShell");
         }
     }
 }

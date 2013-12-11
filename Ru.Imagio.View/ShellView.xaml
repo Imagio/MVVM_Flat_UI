@@ -21,6 +21,9 @@
             <DataTemplate DataType="{x:Type viewModel:SignViewModel}">
                 <view:SignView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:WorkspaceShell}">
+                <view:WorkspaceShellView></view:WorkspaceShellView>
+            </DataTemplate>
         </ContentControl.Resources>
     </ContentControl>
 

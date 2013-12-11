@@ -29,11 +29,11 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid >
-                        <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           Margin="{TemplateBinding Padding}"
                                           x:Name="ContentPresenter">
-                        </ContentPresenter>
+                            </ContentPresenter>
                             <indicators:WaitIndicator Height="20" Width="20" x:Name="WaitIndicator" Opacity="0"
                                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Grid>
@@ -77,9 +77,9 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBaseStyle}"></Style>
-    
+
     <Style x:Key="PrimaryButton" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBaseStyle}">
         <Setter Property="Foreground" Value="#FFFFFF"></Setter>
         <Setter Property="Background" Value="#0072C6"></Setter>
