@@ -5,9 +5,9 @@
     <Viewbox MaxWidth="36" MaxHeight="36">
         <Canvas Height="36" Width="36">
             <Canvas.Resources>
-                <Color x:Key="Dark">#eee</Color>
-                <Color x:Key="Light">#888</Color>
-                <Color x:Key="Middle">#bbb</Color>
+                <Color x:Key="Dark">#1000</Color>
+                <Color x:Key="Light">#8000</Color>
+                <Color x:Key="Middle">#4000</Color>
 
                 <KeyTime x:Key="KT0">00:00:00</KeyTime>
                 <KeyTime x:Key="KT1">00:00:00.1</KeyTime>

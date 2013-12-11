@@ -1,35 +1,80 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
+using Ru.Imagio.ViewModel.Annotations;
 
 namespace Ru.Imagio.ViewModel
 {
-    public class DelegateCommand : ICommand
+    public class DelegeateCommand : DelegateCommand<object>
     {
-        private readonly Func<object, Task> _execute;
-        private readonly Predicate<object> _canExecute;
+        public DelegeateCommand(Action<object> execute, Predicate<object> canExecute = null, Action<Exception> exception = null)
+            : base(
+                o =>
+                {
+                    execute(o);
+                    return null;
+                }, canExecute, exception: exception)
+        {
+            
+        }
+    }
 
-        public DelegateCommand(Func<object, Task> execute = null, Predicate<object> canExecute = null)
+    public class DelegateCommand<TResult> : ICommand, INotifyPropertyChanged
+    {
+        private Task<TResult> _task;
+        private readonly Predicate<object> _canExecute;
+        private readonly Func<object, TResult> _execute;
+        private readonly Action<TResult> _completed;
+        private readonly Action<Exception> _exception;
+
+        public DelegateCommand(Func<object, TResult> execute, Predicate<object> canExecute = null, Action<TResult> completed = null, Action<Exception> exception = null)
         {
             _execute = execute;
-            _canExecute = canExecute;
-            IsExecuting = false;
+            _canExecute = canExecute ?? (o => true);
+            _completed = completed;
+            _exception = exception;
         }
 
         public void Execute(object parameter)
         {
-            IsExecuting = true;
-            var task = _execute(parameter);
-            task.ContinueWith(t =>
+            if (_task != null && _task.Status == TaskStatus.Running)
+                return;
+
+            _task = new Task<TResult>(o =>
             {
-                IsExecuting = false;
+                OnPropertyChanged("IsExecuting");
                 CommandManager.InvalidateRequerySuggested();
-            });
+                return _execute(o);
+            }, parameter);
+
+            _task.ContinueWith(t => OnPropertyChanged("IsExecuting"));
+
+            _task.ContinueWith(t =>
+            {
+                if (_completed != null)
+                {
+                    _completed(t.Result);
+                }
+                CommandManager.InvalidateRequerySuggested();
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+
+            _task.ContinueWith(t =>
+            {
+                if (_execute != null)
+                {
+                    _exception(t.Exception);
+                }
+            }, TaskContinuationOptions.OnlyOnFaulted);
+
+            _task.Start();
         }
 
         public bool CanExecute(object parameter)
         {
-            return !IsExecuting && (_canExecute == null || _canExecute(parameter));
+            return _canExecute(parameter);
         }
 
         public event EventHandler CanExecuteChanged
@@ -38,6 +83,18 @@ namespace Ru.Imagio.ViewModel
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public bool IsExecuting { get; private set; }
+        public bool IsExecuting
+        {
+            get { return _task != null && _task.Status == TaskStatus.Running; }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
