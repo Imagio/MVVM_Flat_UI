@@ -63,6 +63,9 @@ namespace Ru.Imagio.ViewModel
 
         private bool CanSign(object o)
         {
+#if DEBUG
+            return true;
+#endif
             return 
                 !String.IsNullOrEmpty(_login) && 
                 !String.IsNullOrEmpty(_password);
