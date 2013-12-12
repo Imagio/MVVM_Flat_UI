@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Ru.Imagio.ViewModel.Workspaces;
 
 namespace Ru.Imagio.ViewModel
@@ -16,12 +13,17 @@ namespace Ru.Imagio.ViewModel
 
         private void WorkspacePanelOnSelectionChanged(object sender, EventArgs eventArgs)
         {
-            ActiveWorkspace = null;
             OnPropertyChanged("ActiveWorkspace");
         }
 
         public WorkspacePanel WorkspacePanel { get; private set; }
 
-        public ViewModelBase ActiveWorkspace { get; private set; }
+        public ViewModelBase ActiveWorkspace
+        {
+            get
+            {
+                return WorkspacePanel.SelectedItem.Workspace;
+            }
+        }
     }
 }

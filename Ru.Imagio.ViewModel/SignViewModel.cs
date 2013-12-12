@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Input;
 
@@ -29,11 +26,6 @@ namespace Ru.Imagio.ViewModel
         {
             var handler = SignComplete;
             if (handler != null) handler(this, new SignEventArgs(userId));
-        }
-
-        public SignViewModel()
-        {
-
         }
 
         public string Login
@@ -65,10 +57,11 @@ namespace Ru.Imagio.ViewModel
         {
 #if DEBUG
             return true;
-#endif
+#else
             return 
                 !String.IsNullOrEmpty(_login) && 
                 !String.IsNullOrEmpty(_password);
+#endif
         }
 
         private int Sign(object o)

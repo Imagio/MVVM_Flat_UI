@@ -4,6 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModel="clr-namespace:Ru.Imagio.ViewModel;assembly=Ru.Imagio.ViewModel"
+             xmlns:view="clr-namespace:Ru.Imagio.View"
+             xmlns:workspaces="clr-namespace:Ru.Imagio.ViewModel.Workspaces;assembly=Ru.Imagio.ViewModel"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModel:WorkspaceShell}">
     
@@ -11,6 +13,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/FormStyles.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Resources/Indicator.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -20,52 +23,15 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Border Background="#0072C6">
-            <ItemsControl ItemsSource="{Binding WorkspacePanel.Items}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal"></WrapPanel>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock>
-                                <Hyperlink Command="{Binding SelectCommand}" x:Name="Hyperlink"
-                                           TextDecorations="{x:Null}" Foreground="White" Background="Red"
-                                           FontFamily="Segoe UI" FontSize="12">
-                                    <Border x:Name="Border" Background="#01FFFFFF">
-                                    <TextBlock  LineHeight="20" Margin="20 10" Text="{Binding Caption, Mode=OneTime}"></TextBlock>
-                                        </Border>
-                                </Hyperlink>
-                            </TextBlock>
-                        <DataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
-                                                            From="#01FFFFFF" To="White" Duration="00:00:00.1"></ColorAnimation>
-                                            <ColorAnimation Storyboard.TargetName="Hyperlink" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                            From="White" To="#333" Duration="00:00:00.1"></ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                                <DataTrigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
-                                                            From="White" To="#01FFFFFF" Duration="00:00:00.1"></ColorAnimation>
-                                            <ColorAnimation Storyboard.TargetName="Hyperlink" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                            From="#333" To="White" Duration="00:00:00.1"></ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.ExitActions>
-                            </DataTrigger>
-                        </DataTemplate.Triggers>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Border>
+        <ContentControl Content="{Binding WorkspacePanel, IsAsync=True, FallbackValue={StaticResource WaitIndicator}}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type workspaces:WorkspacePanel}">
+                    <view:WorkspaceShellPanel></view:WorkspaceShellPanel>
+                </DataTemplate>
+            </ContentControl.Resources>
+            </ContentControl>
+        
+        <ContentControl Grid.Row="1" Content="{Binding ActiveWorkspace, IsAsync=True, FallbackValue={StaticResource WaitIndicator}}"></ContentControl>
     </Grid>
     
 </UserControl>

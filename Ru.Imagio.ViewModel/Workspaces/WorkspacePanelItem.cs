@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace Ru.Imagio.ViewModel.Workspaces
@@ -10,22 +7,22 @@ namespace Ru.Imagio.ViewModel.Workspaces
     {
         private ICommand _selectCommand;
 
-        public WorkspacePanelItem(string caption, WorkspacePanel workspacePanel, WorkspacePanel.WorkspaceType workspaceType)
+        public WorkspacePanelItem(string caption, WorkspacePanel workspacePanel, Func<ViewModelBase> factoryMethod)
         {
             Caption = caption;
             _workspacePanel = workspacePanel;
-            _workspaceType = workspaceType;
+            _factoryMethod = factoryMethod;
             _workspacePanel.SelectionChanged += WorkspacePanelOnSelectionChanged;
         }
-
-        private WorkspacePanel.WorkspaceType _workspaceType;
 
         private void WorkspacePanelOnSelectionChanged(object sender, EventArgs eventArgs)
         {
             OnPropertyChanged("IsSelected");
         }
 
-        private WorkspacePanel _workspacePanel;
+        private readonly WorkspacePanel _workspacePanel;
+
+        private readonly Func<ViewModelBase> _factoryMethod;
 
         public bool IsSelected
         {
@@ -48,6 +45,14 @@ namespace Ru.Imagio.ViewModel.Workspaces
         {
             EventHandler handler = Select;
             if (handler != null) handler(this, EventArgs.Empty);
+        }
+
+        public ViewModelBase Workspace
+        {
+            get
+            {
+                return _factoryMethod();
+            }
         }
     }
 }

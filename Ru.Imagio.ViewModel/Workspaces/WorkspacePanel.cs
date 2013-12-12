@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
+using System.Threading;
 
 namespace Ru.Imagio.ViewModel.Workspaces
 {
@@ -11,22 +11,14 @@ namespace Ru.Imagio.ViewModel.Workspaces
         private readonly ICollection<WorkspacePanelItem> _items;
         private WorkspacePanelItem _selectedItem;
 
-        public enum WorkspaceType
-        {
-            Notifications,
-            Documents,
-            Directories,
-            Administration
-        }
-
         public WorkspacePanel()
         {
             _items = new Collection<WorkspacePanelItem>
             {
-                new WorkspacePanelItem("УВЕДОМЛЕНИЯ", this, WorkspaceType.Notifications),
-                new WorkspacePanelItem("ДОКУМЕНТЫ", this, WorkspaceType.Documents),
-                new WorkspacePanelItem("СПРАВОЧНИКИ", this, WorkspaceType.Documents),
-                new WorkspacePanelItem("АДМИНИСТРИРОВАНИЕ", this, WorkspaceType.Administration)
+                new WorkspacePanelItem("УВЕДОМЛЕНИЯ", this, FactoryMethod),
+                new WorkspacePanelItem("ДОКУМЕНТЫ", this, FactoryMethod),
+                new WorkspacePanelItem("СПРАВОЧНИКИ", this, FactoryMethod),
+                new WorkspacePanelItem("АДМИНИСТРИРОВАНИЕ", this, FactoryMethod)
             };
 
             foreach (var workspacePanelItem in Items)
@@ -39,6 +31,14 @@ namespace Ru.Imagio.ViewModel.Workspaces
 
             SelectedItem = _items.FirstOrDefault();
         }
+
+#if DEBUG
+        private ViewModelBase FactoryMethod()
+        {
+            Thread.Sleep(1000);
+            return null;
+        }
+#endif
 
         public WorkspacePanelItem SelectedItem
         {
