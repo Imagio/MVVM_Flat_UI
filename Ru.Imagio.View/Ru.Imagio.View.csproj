@@ -52,6 +52,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\WorkspaceShellPanelBrushConverter.cs" />
     <Compile Include="Indicators\WaitIndicator.xaml.cs">
       <DependentUpon>WaitIndicator.xaml</DependentUpon>
     </Compile>

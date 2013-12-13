@@ -4,51 +4,34 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:workspaces="clr-namespace:Ru.Imagio.ViewModel.Workspaces;assembly=Ru.Imagio.ViewModel"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance workspaces:WorkspacePanel}">
+             xmlns:converters="clr-namespace:Ru.Imagio.View.Converters"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance workspaces:WorkspacePanel}">
     
-    <Border Background="#0072C6">
-        <ItemsControl ItemsSource="{Binding Items}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal"></WrapPanel>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+    <UserControl.Resources>
+        <converters:WorkspaceShellPanelBrushConverter x:Key="WorkspaceShellPanelBrushConverter" />
+    </UserControl.Resources>
+    
+    <Border Background="#CCC">
+        <ItemsControl ItemsSource="{Binding Items}" 
+                      HorizontalContentAlignment="Stretch"
+                      AlternationCount="10">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock>
-                                <Hyperlink Command="{Binding SelectCommand}" x:Name="Hyperlink"
-                                           TextDecorations="{x:Null}" Foreground="White" Background="Red"
-                                           FontFamily="Segoe UI" FontSize="12">
-                                    <Border x:Name="Border" Background="#01FFFFFF">
-                                    <TextBlock  LineHeight="20" Margin="20 10" Text="{Binding Caption, Mode=OneTime}"></TextBlock>
-                                        </Border>
-                                </Hyperlink>
-                            </TextBlock>
-                    <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
-                                                            From="#01FFFFFF" To="White" Duration="00:00:00.1"></ColorAnimation>
-                                        <ColorAnimation Storyboard.TargetName="Hyperlink" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                            From="White" To="#333" Duration="00:00:00.1"></ColorAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
-                                                            From="White" To="#01FFFFFF" Duration="00:00:00.1"></ColorAnimation>
-                                        <ColorAnimation Storyboard.TargetName="Hyperlink" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                                            From="#333" To="White" Duration="00:00:00.1"></ColorAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.ExitActions>
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Width="4" Background="{Binding 
+                            RelativeSource={RelativeSource Mode=TemplatedParent}, Path=(ItemsControl.AlternationIndex), 
+                            Converter={StaticResource WorkspaceShellPanelBrushConverter}}"></Border>
+                        <Border Grid.Column="1" BorderBrush="#AAA" BorderThickness="0 0 0 1">
+                        <TextBlock Text="{Binding Caption}" 
+                                   FontFamily="Segoe UI" Margin="15 0"
+                                   FontSize="12" LineHeight="20" Foreground="#222" 
+                                   VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

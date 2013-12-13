@@ -15,10 +15,11 @@ namespace Ru.Imagio.ViewModel.Workspaces
         {
             _items = new Collection<WorkspacePanelItem>
             {
-                new WorkspacePanelItem("УВЕДОМЛЕНИЯ", this, FactoryMethod),
-                new WorkspacePanelItem("ДОКУМЕНТЫ", this, FactoryMethod),
-                new WorkspacePanelItem("СПРАВОЧНИКИ", this, FactoryMethod),
-                new WorkspacePanelItem("АДМИНИСТРИРОВАНИЕ", this, FactoryMethod)
+                new WorkspacePanelItem("ВСЕ", this, FactoryMethod),
+                new WorkspacePanelItem("ПРИКАЗЫ", this, FactoryMethod),
+                new WorkspacePanelItem("ВХ. ДОКУМЕНТЫ", this, FactoryMethod),
+                new WorkspacePanelItem("ДОГОВОРЫ", this, FactoryMethod),
+                new WorkspacePanelItem("АКТЫ", this, FactoryMethod)
             };
 
             foreach (var workspacePanelItem in Items)
