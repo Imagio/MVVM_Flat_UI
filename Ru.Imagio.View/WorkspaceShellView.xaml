@@ -8,7 +8,7 @@
              xmlns:workspaces="clr-namespace:Ru.Imagio.ViewModel.Workspaces;assembly=Ru.Imagio.ViewModel"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModel:WorkspaceShell}">
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,21 +17,22 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
+
         <ContentControl Content="{Binding WorkspacePanel, IsAsync=True, FallbackValue={StaticResource WaitIndicator}}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type workspaces:WorkspacePanel}">
                     <view:WorkspaceShellPanel></view:WorkspaceShellPanel>
                 </DataTemplate>
             </ContentControl.Resources>
-            </ContentControl>
-        
+        </ContentControl>
+
         <ContentControl Grid.Column="1" Content="{Binding ActiveWorkspace, IsAsync=True, FallbackValue={StaticResource WaitIndicator}}"></ContentControl>
     </Grid>
-    
+
 </UserControl>

@@ -36,7 +36,6 @@ namespace Ru.Imagio.ViewModel.Workspaces
 #if DEBUG
         private ViewModelBase FactoryMethod()
         {
-            Thread.Sleep(1000);
             return null;
         }
 #endif

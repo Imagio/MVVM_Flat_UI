@@ -4,7 +4,7 @@
         xmlns:view="clr-namespace:Ru.Imagio.View;assembly=Ru.Imagio.View"
         xmlns:viewModel="clr-namespace:Ru.Imagio.ViewModel;assembly=Ru.Imagio.ViewModel"
         xmlns:indicators="clr-namespace:Ru.Imagio.View.Indicators;assembly=Ru.Imagio.View"
-        Title="Document" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="Document" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <indicators:WaitIndicator x:Key="WaitIndicator" />

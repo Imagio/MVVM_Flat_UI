@@ -6,32 +6,67 @@
              xmlns:workspaces="clr-namespace:Ru.Imagio.ViewModel.Workspaces;assembly=Ru.Imagio.ViewModel"
              xmlns:converters="clr-namespace:Ru.Imagio.View.Converters"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance workspaces:WorkspacePanel}">
-    
+
     <UserControl.Resources>
         <converters:WorkspaceShellPanelBrushConverter x:Key="WorkspaceShellPanelBrushConverter" />
     </UserControl.Resources>
-    
-    <Border Background="#CCC">
+
+    <Border Background="#DDD">
         <ItemsControl ItemsSource="{Binding Items}" 
                       HorizontalContentAlignment="Stretch"
                       AlternationCount="10">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Width="4" Background="{Binding 
-                            RelativeSource={RelativeSource Mode=TemplatedParent}, Path=(ItemsControl.AlternationIndex), 
-                            Converter={StaticResource WorkspaceShellPanelBrushConverter}}"></Border>
-                        <Border Grid.Column="1" BorderBrush="#AAA" BorderThickness="0 0 0 1">
-                        <TextBlock Text="{Binding Caption}" 
-                                   FontFamily="Segoe UI" Margin="15 0"
-                                   FontSize="12" LineHeight="20" Foreground="#222" 
-                                   VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
+                    <RadioButton IsChecked="{Binding IsSelected, Mode=OneWay}" Content="{Binding Caption}"
+                                 Command="{Binding SelectCommand}" Foreground="#333" x:Name="Button" 
+                                 Cursor="Hand">
+                        <RadioButton.Style>
+                            <Style TargetType="{x:Type RadioButton}">
+                                <Setter Property="OverridesDefaultStyle" Value="True"></Setter>
+                                <Setter Property="UseLayoutRounding" Value="False"></Setter>
+                                <Setter Property="SnapsToDevicePixels" Value="True"></Setter>                                
+                                <Setter Property="Background" Value="#DDD"></Setter>
+                                <Setter Property="Padding" Value="15 10"></Setter>
+                                <Setter Property="TextBlock.LineHeight" Value="20"></Setter>
+                                <Setter Property="FontSize" Value="14"></Setter>
+                                <Setter Property="FontFamily" Value="Segoe UI"></Setter>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                                        <Border Background="{TemplateBinding Background}"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter></ContentPresenter>
+                                        </Border>
+                                    </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </RadioButton.Style>
+                    </RadioButton>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Button" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                                        From="#DDD" To="#0072C6" Duration="00:00:00.2"></ColorAnimation>
+                                        <ColorAnimation Storyboard.TargetName="Button" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
+                                                        From="#333" To="#FFF" Duration="00:00:00.2"></ColorAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Button" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                                        To="#DDD" From="#0072C6" Duration="00:00:00.2"></ColorAnimation>
+                                        <ColorAnimation Storyboard.TargetName="Button" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
+                                                        To="#333" From="#FFF" Duration="00:00:00.2"></ColorAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

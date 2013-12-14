@@ -68,7 +68,6 @@ namespace Ru.Imagio.ViewModel
         {
             var login = _login;
             var password = _password;
-            Thread.Sleep(2000);
             return 1;
         }
     }
