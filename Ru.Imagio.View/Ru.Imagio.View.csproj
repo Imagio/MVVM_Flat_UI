@@ -39,6 +39,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -52,6 +54,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\NotificationIcon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\NotificationIcon.Designer.cs">
+      <DependentUpon>NotificationIcon.cs</DependentUpon>
+    </Compile>
     <Compile Include="Converters\WorkspaceShellPanelBrushConverter.cs" />
     <Compile Include="Indicators\WaitIndicator.xaml.cs">
       <DependentUpon>WaitIndicator.xaml</DependentUpon>
@@ -69,18 +77,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ShellView.xaml.cs">
-      <DependentUpon>ShellView.xaml</DependentUpon>
+    <Compile Include="ShellWindow.xaml.cs">
+      <DependentUpon>ShellWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SignView.xaml.cs">
-      <DependentUpon>SignView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WorkspaceShellPanel.xaml.cs">
-      <DependentUpon>WorkspaceShellPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WorkspaceShellView.xaml.cs">
-      <DependentUpon>WorkspaceShellView.xaml</DependentUpon>
-    </Compile>
+    <EmbeddedResource Include="Controls\NotificationIcon.resx">
+      <DependentUpon>NotificationIcon.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -126,19 +128,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ShellView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SignView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceShellPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorkspaceShellView.xaml">
+    <Page Include="ShellWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

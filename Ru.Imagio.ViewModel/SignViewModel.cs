@@ -1,74 +1,49 @@
 ﻿using System;
-using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows.Input;
 
 namespace Ru.Imagio.ViewModel
 {
-    public class SignViewModel : ViewModelBase
+    public class SignViewModel: ViewModelBase
     {
-        private string _login;
-        private string _password;
+        public string UserName { private get; set; }
+        public string Password { private get; set; }
+
+        public event EventHandler<SignedEventArgs> Signed;
+
+        protected virtual void OnSigned(int userId)
+        {
+            var handler = Signed;
+            if (handler != null) 
+                handler(this, new SignedEventArgs(userId));
+        }
+
+        public SignViewModel()
+        {
+            UserName = String.Empty;
+            Password = String.Empty;
+        }
+
         private ICommand _signCommand;
-
-        public class SignEventArgs : EventArgs
-        {
-            public int UserId { get; private set; }
-
-            public SignEventArgs(int userId)
-            {
-                UserId = userId;
-            }
-        }
-
-        public event EventHandler<SignEventArgs> SignComplete;
-
-        protected virtual void OnSignComplete(int userId)
-        {
-            var handler = SignComplete;
-            if (handler != null) handler(this, new SignEventArgs(userId));
-        }
-
-        public string Login
-        {
-            set
-            {
-                _login = value;
-            }
-        }
-
-        public string Password
-        {
-            set
-            {
-                _password = value;
-            }
-        }
 
         public ICommand SignCommand
         {
             get
             {
-                return _signCommand ?? (
-                    _signCommand = new DelegateCommand<int>(Sign, CanSign, OnSignComplete));
+                return _signCommand ?? (_signCommand = new DelegateCommand(o => OnSigned(1)));
             }
         }
+    }
 
-        private bool CanSign(object o)
-        {
-#if DEBUG
-            return true;
-#else
-            return 
-                !String.IsNullOrEmpty(_login) && 
-                !String.IsNullOrEmpty(_password);
-#endif
-        }
+    public class SignedEventArgs : EventArgs
+    {
+        public int UserId { get; private set; }
 
-        private int Sign(object o)
+        public SignedEventArgs(int userId)
         {
-            var login = _login;
-            var password = _password;
-            return 1;
+            UserId = userId;
         }
     }
 }

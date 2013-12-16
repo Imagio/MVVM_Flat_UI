@@ -1,40 +1,75 @@
-﻿namespace Ru.Imagio.ViewModel
+﻿using System;
+using System.Net.Sockets;
+using System.Windows.Threading;
+
+namespace Ru.Imagio.ViewModel
 {
     public class ShellViewModel : ViewModelBase
     {
-        private static ShellViewModel _handle;
+        #region SINGLETON
 
-        public static ShellViewModel Handle
+        private static ShellViewModel _instance;
+
+        public static ShellViewModel Instance
         {
             get
             {
-                return _handle ?? (_handle = new ShellViewModel());
+                return _instance ?? (_instance = new ShellViewModel());
             }
         }
 
-        public ShellViewModel()
+        #endregion
+
+        private ShellViewModel()
         {
             UserID = 0;
+            Notificator = new Notificator();
+            var timer = new DispatcherTimer {Interval = new TimeSpan(0, 0, 10)};
+            timer.Tick += TimerOnTick;
+            timer.Start();
+        }
+
+        private void TimerOnTick(object sender, EventArgs eventArgs)
+        {
+            Notificator.ShowNotify("Foo\nBar");
         }
 
         public int UserID { get; private set; }
 
-        public ViewModelBase ActiveShell
+        public Notificator Notificator
+        {
+            get; private set;
+        }
+
+        public ViewModelBase ActiveWorkspace
         {
             get
             {
-                if (UserID != 0) 
-                    return new WorkspaceShell();
-                var signViewModel = new SignViewModel();
-                signViewModel.SignComplete += SignViewModelOnSignComplete;
-                return signViewModel;
+                if (UserID == 0)
+                {
+                    var signViewModel = new SignViewModel();
+                    signViewModel.Signed += (sender, args) =>
+                    {
+                        UserID = args.UserId;
+                    };
+                    return signViewModel;
+                }
+                return null;
             }
         }
 
-        private void SignViewModelOnSignComplete(object sender, SignViewModel.SignEventArgs signEventArgs)
+        public event EventHandler Shutdown;
+
+        protected virtual void OnShutdown()
         {
-            UserID = signEventArgs.UserId;
-            OnPropertyChanged("ActiveShell");
+            var handler = Shutdown;
+            if (handler != null) 
+                handler(this, EventArgs.Empty);
+        }
+
+        public void TryShutdown()
+        {
+            OnShutdown();
         }
     }
 }
