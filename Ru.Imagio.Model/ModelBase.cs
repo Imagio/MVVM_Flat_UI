@@ -11,6 +11,6 @@ namespace Ru.Imagio.Model
     {
         [Key]
         [Required]
-        public int Id { get; set; }
+        public abstract int Id { get; set; }
     }
 }

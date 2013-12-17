@@ -24,5 +24,7 @@ namespace Ru.Imagio.Model
         [Display(Name = "Активный пользователь")]
         [DefaultValue(true)]
         public bool IsActive { get; set; }
+
+        public override int Id { get; set; }
     }
 }

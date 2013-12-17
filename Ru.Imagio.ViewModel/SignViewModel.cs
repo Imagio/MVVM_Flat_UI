@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using Ru.Imagio.Model;
 using Ru.Imagio.ViewModel.Crypto;
 
 namespace Ru.Imagio.ViewModel
@@ -43,6 +44,19 @@ namespace Ru.Imagio.ViewModel
                 {
                     var password = Password;
                     var userName = UserName;
+
+                    var userId = 0;
+
+                    using (var context = new DocsContext())
+                    {
+                        var account = context.Accounts.FirstOrDefault(acc => acc.IsActive &&
+                                                                             acc.UserName == userName &&
+                                                                             acc.Password == password);
+                        if (account == null)
+                            return;
+                        userId = account.Id;
+                    }
+
                     var signData = new CryptoSign()
                     {
                         RememberMe = IsRememberMe,
@@ -55,7 +69,8 @@ namespace Ru.Imagio.ViewModel
                     }
 
                     CryptoSignStore.Save(signData);
-                    OnSigned(1);
+
+                    OnSigned(userId);
                 } ));
         }
         }

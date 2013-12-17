@@ -20,6 +20,7 @@ namespace Ru.Imagio.ViewModel
 
         #endregion
 
+
         private readonly DispatcherTimer _timer;
 
         private ShellViewModel()
