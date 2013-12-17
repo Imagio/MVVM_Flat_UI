@@ -3,7 +3,7 @@ using Ru.Imagio.ViewModel.Annotations;
 
 namespace Ru.Imagio.ViewModel
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

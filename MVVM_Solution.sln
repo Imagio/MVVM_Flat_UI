@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ru.Imagio.Main", "Ru.Imagio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ru.Imagio.Model", "Ru.Imagio.Model\Ru.Imagio.Model.csproj", "{F8618E70-409F-443B-89C6-5F7CB43A78A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModelTest", "ViewModelTest\ViewModelTest.csproj", "{459F8E18-89E3-4555-8ABC-3972C4BFAECB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F8618E70-409F-443B-89C6-5F7CB43A78A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8618E70-409F-443B-89C6-5F7CB43A78A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8618E70-409F-443B-89C6-5F7CB43A78A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{459F8E18-89E3-4555-8ABC-3972C4BFAECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{459F8E18-89E3-4555-8ABC-3972C4BFAECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{459F8E18-89E3-4555-8ABC-3972C4BFAECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{459F8E18-89E3-4555-8ABC-3972C4BFAECB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

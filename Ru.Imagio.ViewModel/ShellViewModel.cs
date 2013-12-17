@@ -20,13 +20,21 @@ namespace Ru.Imagio.ViewModel
 
         #endregion
 
+        private readonly DispatcherTimer _timer;
+
         private ShellViewModel()
         {
             UserID = 0;
             Notificator = new Notificator();
-            var timer = new DispatcherTimer {Interval = new TimeSpan(0, 0, 10)};
-            timer.Tick += TimerOnTick;
-            timer.Start();
+            _timer = new DispatcherTimer
+            {
+#if DEBUG
+                Interval = new TimeSpan(0, 0, 10)
+#else
+                Interval = new TimeSpan(0, 10, 0)
+#endif
+            };
+            _timer.Tick += TimerOnTick;
         }
 
         private void TimerOnTick(object sender, EventArgs eventArgs)
@@ -41,6 +49,7 @@ namespace Ru.Imagio.ViewModel
             get; private set;
         }
 
+        private ViewModelBase _activeWorkspace;
         public ViewModelBase ActiveWorkspace
         {
             get
@@ -51,10 +60,12 @@ namespace Ru.Imagio.ViewModel
                     signViewModel.Signed += (sender, args) =>
                     {
                         UserID = args.UserId;
+                        OnPropertyChanged("ActiveWorkspace");
+                        _timer.Start();
                     };
                     return signViewModel;
                 }
-                return null;
+                return _activeWorkspace ?? (_activeWorkspace = new WorkspaceShellViewModel());
             }
         }
 

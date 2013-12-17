@@ -80,6 +80,9 @@
     <Compile Include="ShellWindow.xaml.cs">
       <DependentUpon>ShellWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SignView.xaml.cs">
+      <DependentUpon>SignView.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Controls\NotificationIcon.resx">
       <DependentUpon>NotificationIcon.cs</DependentUpon>
     </EmbeddedResource>
@@ -129,6 +132,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ShellWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SignView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

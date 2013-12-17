@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using Ru.Imagio.ViewModel.Crypto;
 
 namespace Ru.Imagio.ViewModel
 {
     public class SignViewModel: ViewModelBase
     {
-        public string UserName { private get; set; }
-        public string Password { private get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public bool IsRememberMe { get; set; }
 
         public event EventHandler<SignedEventArgs> Signed;
 
@@ -22,8 +24,13 @@ namespace Ru.Imagio.ViewModel
 
         public SignViewModel()
         {
-            UserName = String.Empty;
-            Password = String.Empty;
+            var signData = CryptoSignStore.Load();
+            IsRememberMe = signData.RememberMe;
+            if (IsRememberMe)
+            {
+                UserName = PasswordEncoder.Decode(signData.UserName);
+                Password = PasswordEncoder.Decode(signData.Password);
+            }
         }
 
         private ICommand _signCommand;
@@ -32,8 +39,25 @@ namespace Ru.Imagio.ViewModel
         {
             get
             {
-                return _signCommand ?? (_signCommand = new DelegateCommand(o => OnSigned(1)));
-            }
+                return _signCommand ?? (_signCommand = new DelegateCommand(o =>
+                {
+                    var password = Password;
+                    var userName = UserName;
+                    var signData = new CryptoSign()
+                    {
+                        RememberMe = IsRememberMe,
+                    };
+
+                    if (IsRememberMe)
+                    {
+                        signData.UserName = PasswordEncoder.Encode(userName);
+                        signData.Password = PasswordEncoder.Encode(password);
+                    }
+
+                    CryptoSignStore.Save(signData);
+                    OnSigned(1);
+                } ));
+        }
         }
     }
 

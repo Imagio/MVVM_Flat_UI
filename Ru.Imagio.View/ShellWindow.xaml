@@ -4,16 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:Ru.Imagio.ViewModel;assembly=Ru.Imagio.ViewModel"
+        xmlns:view="clr-namespace:Ru.Imagio.View"
         mc:Ignorable="d"
         Title="DocumentShell" Height="480" Width="640"
         WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignInstance viewModel:ShellViewModel}">
-    
+
     <Window.Resources>
-        <ResourceDictionary Source="Resources/Indicator.xaml"></ResourceDictionary>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Indicator.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type viewModel:SignViewModel}">
+                <view:SignView />
+            </DataTemplate>
+        </ResourceDictionary>
     </Window.Resources>
-    
+
     <ContentControl Focusable="False" Content="{Binding ActiveWorkspace, IsAsync=True, FallbackValue={StaticResource WaitIndicator}}">
-        
+
     </ContentControl>
-    
+
 </Window>
