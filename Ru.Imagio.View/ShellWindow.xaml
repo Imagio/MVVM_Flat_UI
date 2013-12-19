@@ -6,7 +6,7 @@
         xmlns:viewModel="clr-namespace:Ru.Imagio.ViewModel;assembly=Ru.Imagio.ViewModel"
         xmlns:view="clr-namespace:Ru.Imagio.View"
         mc:Ignorable="d"
-        Title="DocumentShell" Height="480" Width="640"
+        Title="DocumentShell" Height="600" Width="800"
         WindowStartupLocation="CenterScreen" d:DataContext="{d:DesignInstance viewModel:ShellViewModel}">
 
     <Window.Resources>

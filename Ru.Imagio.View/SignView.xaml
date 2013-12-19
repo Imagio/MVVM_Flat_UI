@@ -6,26 +6,43 @@
              xmlns:viewModel="clr-namespace:Ru.Imagio.ViewModel;assembly=Ru.Imagio.ViewModel"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModel:SignViewModel}"
-             DataContextChanged="SignView_OnDataContextChanged">
+             DataContextChanged="SignView_OnDataContextChanged" Background="White">
     
-    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Indicator.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Resources/FormStyles.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid Background="#ccc">
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="300"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*" MinWidth="340"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         
-        <Label Grid.Column="0" Grid.Row="0">Username</Label>
-        <Label Grid.Column="0" Grid.Row="1">Password</Label>
-        <TextBox x:Name="UserName" Grid.Column="1" Grid.Row="0" Text="{Binding Path=UserName, Mode=OneWayToSource}"></TextBox>
-        <PasswordBox x:Name="Password" Grid.Column="1" Grid.Row="1" PasswordChanged="Password_OnPasswordChanged"></PasswordBox>
-        <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="{Binding Path=IsRememberMe}">Remember me</CheckBox>
-        <Button Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Padding="15 5" Command="{Binding SignCommand}">Sign</Button>
+        <Viewbox Grid.Column="0" MaxHeight="256" MaxWidth="256" HorizontalAlignment="Right" VerticalAlignment="Center">
+        <Image Width="256" Height="256"
+               Source="Images/Doc.png"></Image>
+        </Viewbox>
+
+        <Border Grid.Column="1" Background="White" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <StackPanel Width="300" Margin="20 20 20 20">
+                <TextBlock FontFamily="Segoe UI" FontSize="32" LineHeight="40" Foreground="#333"
+                           FontWeight="Light" Margin=" 0 0 0 40">Вход</TextBlock>
+                <Label Style="{StaticResource FormLabel}">Имя пользователя</Label>
+                <TextBox x:Name="UserName" Text="{Binding Path=UserName, Mode=OneWayToSource}"
+                         Margin="0 0 0 20"></TextBox>
+                <Label Style="{StaticResource FormLabel}">Пароль</Label>
+                <PasswordBox x:Name="Password" Margin="0 0 0 20" 
+                             PasswordChanged="Password_OnPasswordChanged"></PasswordBox>
+                <CheckBox IsChecked="{Binding Path=IsRememberMe}" Margin="0 0 0 20">Запомнить</CheckBox>
+                <Button Command="{Binding SignCommand}">Sign</Button>
+            </StackPanel>
+        </Border>
     </Grid>
-    
+
 </UserControl>

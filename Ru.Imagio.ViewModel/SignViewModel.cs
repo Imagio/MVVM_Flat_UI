@@ -27,11 +27,9 @@ namespace Ru.Imagio.ViewModel
         {
             var signData = CryptoSignStore.Load();
             IsRememberMe = signData.RememberMe;
-            if (IsRememberMe)
-            {
-                UserName = PasswordEncoder.Decode(signData.UserName);
-                Password = PasswordEncoder.Decode(signData.Password);
-            }
+            if (!IsRememberMe) return;
+            UserName = PasswordEncoder.Decode(signData.UserName);
+            Password = PasswordEncoder.Decode(signData.Password);
         }
 
         private ICommand _signCommand;
@@ -44,6 +42,7 @@ namespace Ru.Imagio.ViewModel
                 {
                     var password = Password;
                     var userName = UserName;
+                    var hashPassword = PasswordHash.CalcPasswordHash(password);
 
                     var userId = 0;
 
@@ -51,7 +50,7 @@ namespace Ru.Imagio.ViewModel
                     {
                         var account = context.Accounts.FirstOrDefault(acc => acc.IsActive &&
                                                                              acc.UserName == userName &&
-                                                                             acc.Password == password);
+                                                                             acc.Password == hashPassword);
                         if (account == null)
                             return;
                         userId = account.Id;
