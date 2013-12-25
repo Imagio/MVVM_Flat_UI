@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Sockets;
+using System.Text;
 using System.Windows.Threading;
+using Ru.Imagio.Model;
 
 namespace Ru.Imagio.ViewModel
 {
@@ -40,7 +42,24 @@ namespace Ru.Imagio.ViewModel
 
         private void TimerOnTick(object sender, EventArgs eventArgs)
         {
-            Notificator.ShowNotify("Foo\nBar");
+            if (UserID == 0)
+                return;
+
+            var notification = new StringBuilder();
+
+            using (var context = new DocsContext())
+            {
+                var account = context.GetAccount(UserID);
+                if (account == null)
+                    return;
+                if (account.SendAccounts.Count == 0)
+                    return;
+                foreach (var sendAccount in account.SendAccounts)
+                {
+                    notification.AppendLine(String.Format("{0}; дата: {1}", sendAccount.DocumentId, sendAccount.SendDate));
+                }
+            }
+            Notificator.ShowNotify(notification.ToString());
         }
 
         public int UserID { get; private set; }
@@ -55,18 +74,16 @@ namespace Ru.Imagio.ViewModel
         {
             get
             {
-                if (UserID == 0)
+                if (UserID != 0) 
+                    return _activeWorkspace ?? (_activeWorkspace = new WorkspaceShellViewModel());
+                var signViewModel = new SignViewModel();
+                signViewModel.Signed += (sender, args) =>
                 {
-                    var signViewModel = new SignViewModel();
-                    signViewModel.Signed += (sender, args) =>
-                    {
-                        UserID = args.UserId;
-                        OnPropertyChanged("ActiveWorkspace");
-                        _timer.Start();
-                    };
-                    return signViewModel;
-                }
-                return _activeWorkspace ?? (_activeWorkspace = new WorkspaceShellViewModel());
+                    UserID = args.UserId;
+                    OnPropertyChanged("ActiveWorkspace");
+                    _timer.Start();
+                };
+                return signViewModel;
             }
         }
 

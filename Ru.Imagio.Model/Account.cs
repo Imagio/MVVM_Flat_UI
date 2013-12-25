@@ -1,11 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ru.Imagio.Model
 {
     [Table("Accounts")]
-    public class Account: ModelBase
+    public class Account: IEntity
     {
         [Required]
         [Column("UserName")]
@@ -25,6 +26,10 @@ namespace Ru.Imagio.Model
         [DefaultValue(true)]
         public bool IsActive { get; set; }
 
-        public override int Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        public virtual ICollection<SendAccount> SendAccounts { get; set; }
     }
 }

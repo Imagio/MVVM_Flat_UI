@@ -17,7 +17,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     
-    <Grid Background="#ccc">
+    <Grid Background="#aaa">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -40,7 +40,7 @@
                 <PasswordBox x:Name="Password" Margin="0 0 0 20" 
                              PasswordChanged="Password_OnPasswordChanged"></PasswordBox>
                 <CheckBox IsChecked="{Binding Path=IsRememberMe}" Margin="0 0 0 20">Запомнить</CheckBox>
-                <Button Command="{Binding SignCommand}">Sign</Button>
+                <Button Command="{Binding SignCommand}">Войти</Button>
             </StackPanel>
         </Border>
     </Grid>
