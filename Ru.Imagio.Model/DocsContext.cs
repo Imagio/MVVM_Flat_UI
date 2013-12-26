@@ -28,13 +28,15 @@ namespace Ru.Imagio.Model
             
         }
 
-        public Account GetAccount(int Id)
+        public Account GetAccount(int id)
         {
-            return Accounts.FirstOrDefault(account => account.Id == Id);
+            return Accounts.FirstOrDefault(account => account.Id == id);
         }
 
         public DbSet<Account> Accounts { get; set; }
 
         public DbSet<SendAccount> SendAccounts { get; set; }
+
+        public DbSet<Document> Documents { get; set; }
     }
 }

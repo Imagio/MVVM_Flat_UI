@@ -16,8 +16,8 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    
-    <Grid Background="#aaa">
+
+    <Grid Background="White">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -31,7 +31,7 @@
 
         <Border Grid.Column="1" Background="White" HorizontalAlignment="Left" VerticalAlignment="Center">
             <StackPanel Width="300" Margin="20 20 20 20">
-                <TextBlock FontFamily="Segoe UI" FontSize="32" LineHeight="40" Foreground="#333"
+                <TextBlock FontFamily="Segoe UI" FontSize="32" LineHeight="40" Foreground="#4270ae"
                            FontWeight="Light" Margin=" 0 0 0 40">Вход</TextBlock>
                 <Label Style="{StaticResource FormLabel}">Имя пользователя</Label>
                 <TextBox x:Name="UserName" Text="{Binding Path=UserName, Mode=OneWayToSource}"

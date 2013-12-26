@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Windows.Input;
 using System.Windows.Threading;
 using Ru.Imagio.Model;
 
@@ -22,6 +24,10 @@ namespace Ru.Imagio.ViewModel
 
         #endregion
 
+        public bool IsSigned()
+        {
+            return UserID > 0;
+        }
 
         private readonly DispatcherTimer _timer;
 
@@ -32,7 +38,7 @@ namespace Ru.Imagio.ViewModel
             _timer = new DispatcherTimer
             {
 #if DEBUG
-                Interval = new TimeSpan(0, 0, 10)
+                Interval = new TimeSpan(0, 0, 3)
 #else
                 Interval = new TimeSpan(0, 10, 0)
 #endif
@@ -54,9 +60,9 @@ namespace Ru.Imagio.ViewModel
                     return;
                 if (account.SendAccounts.Count == 0)
                     return;
-                foreach (var sendAccount in account.SendAccounts)
+                foreach (var document in account.SendAccounts.Select(sendAccount => sendAccount.Document))
                 {
-                    notification.AppendLine(String.Format("{0}; дата: {1}", sendAccount.DocumentId, sendAccount.SendDate));
+                    notification.AppendLine(String.Format("№{0}\t{1}\tот {2:d}", document.DocumentNumber, document.Name, document.Date));
                 }
             }
             Notificator.ShowNotify(notification.ToString());
@@ -76,15 +82,22 @@ namespace Ru.Imagio.ViewModel
             {
                 if (UserID != 0) 
                     return _activeWorkspace ?? (_activeWorkspace = new WorkspaceShellViewModel());
-                var signViewModel = new SignViewModel();
-                signViewModel.Signed += (sender, args) =>
-                {
-                    UserID = args.UserId;
-                    OnPropertyChanged("ActiveWorkspace");
-                    _timer.Start();
-                };
-                return signViewModel;
+                return GetSignViewModel();
             }
+        }
+
+        private ViewModelBase GetSignViewModel()
+        {
+            var signViewModel = new SignViewModel();
+            signViewModel.Signed += OnSignViewModelSigned;
+            return signViewModel;            
+        }
+
+        private void OnSignViewModelSigned(object sender, SignedEventArgs args)
+        {
+            UserID = args.UserId;
+            OnPropertyChanged("ActiveWorkspace");
+            _timer.Start();
         }
 
         public event EventHandler Shutdown;
@@ -99,6 +112,21 @@ namespace Ru.Imagio.ViewModel
         public void TryShutdown()
         {
             OnShutdown();
+        }
+
+        private ICommand _signOutCommand;
+
+        public ICommand SignOutCommand
+        {
+            get
+            {
+                return _signOutCommand ?? (_signOutCommand = new DelegateCommand(o =>
+                {
+                    UserID = 0;
+                    _timer.Stop();
+                    OnPropertyChanged("ActiveWorkspace");
+                }, o => IsSigned()));
+            }
         }
     }
 }

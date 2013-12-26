@@ -26,6 +26,6 @@ namespace Ru.Imagio.Model
         [Column("DocumentId")]
         public int DocumentId { get; set; }
 
-        public virtual Account Account { get; set; }
+        public virtual Document Document { get; set; }
     }
 }
