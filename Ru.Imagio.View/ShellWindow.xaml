@@ -61,6 +61,20 @@
                     Выйти</Hyperlink>
             </TextBlock>
         </StackPanel>
+
+        <ItemsControl HorizontalAlignment="Right" VerticalAlignment="Top"
+                      ItemsSource="{Binding Path=Notifications}"
+                      HorizontalContentAlignment="Stretch">
+            <ItemsControl.Resources>
+                <ResourceDictionary Source="Resources/NotificationResource.xaml"></ResourceDictionary>
+            </ItemsControl.Resources>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="{x:Type FrameworkElement}">
+                    <Setter Property="Margin" Value="0 5 5 0"></Setter>
+                    <Setter Property="Width" Value="300"></Setter>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
     </Grid>
 
 </Window>

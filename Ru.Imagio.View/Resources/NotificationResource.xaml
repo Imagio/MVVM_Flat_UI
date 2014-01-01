@@ -1,0 +1,77 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:Ru.Imagio.View.Converters"
+                    xmlns:notifications="clr-namespace:Ru.Imagio.ViewModel.Notifications;assembly=Ru.Imagio.ViewModel">
+
+    <Style x:Key="NotificationBorder" TargetType="{x:Type Border}">
+        <Setter Property="Padding" Value="10"></Setter>
+        <Setter Property="CornerRadius" Value="4"></Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5 0.5"></Setter>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform CenterX="0" CenterY="0" ScaleX="1" ScaleY="1"></ScaleTransform>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CloseButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="8"></Setter>
+        <Setter Property="Height" Value="8"></Setter>
+        <Setter Property="Background" Value="#01FFFFFF"></Setter>
+        <Setter Property="BorderBrush" Value="#8FFF"></Setter>
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                    <Path Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1"
+                          Data="M0 0 L7 7 M7 0 L0 7"></Path>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="White"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Storyboard x:Key="AddAnimation">
+        <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)" 
+                         Storyboard.TargetName="Border" Duration="0:0:0.5" From="0" To="1" />
+        <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)" 
+                         Storyboard.TargetName="Border" Duration="0:0:0.5" From="0" To="1" />
+    </Storyboard>
+
+    <Storyboard x:Key="RemoveAnimation">
+        <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)" 
+                         Storyboard.TargetName="Border" Duration="0:0:0.5" From="1" To="0" />
+        <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)" 
+                         Storyboard.TargetName="Border" Duration="0:0:0.5" From="1" To="0" />
+    </Storyboard>
+
+    <converters:NotificationTypeConverter x:Key="NotificationTypeConverter">
+    </converters:NotificationTypeConverter>
+    
+    <DataTemplate DataType="{x:Type notifications:NotificationItem}">
+        <Border Style="{StaticResource NotificationBorder}" Background="{Binding NotificationType, Converter={StaticResource NotificationTypeConverter}}"
+                x:Name="Border">
+            <Grid>
+                <TextBlock Foreground="White" Text="{Binding Message}" TextWrapping="Wrap"></TextBlock>
+                <Button Style="{StaticResource CloseButtonStyle}" Command="{Binding CloseCommand}"
+                        VerticalAlignment="Top" HorizontalAlignment="Right" Margin="-2"></Button>
+            </Grid>
+        </Border>
+        <DataTemplate.Triggers>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource AddAnimation}"></BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="FrameworkElement.Unloaded">
+                <BeginStoryboard Storyboard="{StaticResource RemoveAnimation}"></BeginStoryboard>
+            </EventTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+
+</ResourceDictionary> 

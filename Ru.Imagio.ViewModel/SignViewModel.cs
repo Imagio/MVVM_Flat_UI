@@ -5,10 +5,11 @@ using System.Text;
 using System.Windows.Input;
 using Ru.Imagio.Model;
 using Ru.Imagio.ViewModel.Crypto;
+using Ru.Imagio.ViewModel.Notifications;
 
 namespace Ru.Imagio.ViewModel
 {
-    public class SignViewModel: ViewModelBase
+    public class SignViewModel : ViewModelBase
     {
         public string UserName { get; set; }
         public string Password { get; set; }
@@ -19,7 +20,7 @@ namespace Ru.Imagio.ViewModel
         protected virtual void OnSigned(int userId)
         {
             var handler = Signed;
-            if (handler != null) 
+            if (handler != null)
                 handler(this, new SignedEventArgs(userId));
         }
 
@@ -38,10 +39,10 @@ namespace Ru.Imagio.ViewModel
         {
             get
             {
-                return _signCommand ?? (_signCommand = new DelegateCommand(o =>
+                return _signCommand ?? (_signCommand = new AsyncDelegateCommand(o =>
                 {
-                    var password = Password;
-                    var userName = UserName;
+                    var password = Password ?? "";
+                    var userName = UserName ?? "";
                     var hashPassword = PasswordHash.CalcPasswordHash(password);
 
                     var userId = 0;
@@ -70,8 +71,17 @@ namespace Ru.Imagio.ViewModel
                     CryptoSignStore.Save(signData);
 
                     OnSigned(userId);
-                } ));
+                }, exception: Exception));
+            }
         }
+
+        private void Exception(Exception exception)
+        {
+            if (exception == null)
+                return;
+            ShellViewModel.Instance.AddNotification(
+                exception.InnerException == null ? exception.Message : exception.InnerException.Message,
+                NotificationType.Error);
         }
     }
 

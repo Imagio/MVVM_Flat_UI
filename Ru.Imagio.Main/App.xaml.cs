@@ -15,12 +15,19 @@ namespace Ru.Imagio.Main
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            ShutdownMode = ShutdownMode.OnExplicitShutdown;
-            var shellViewModel = ShellViewModel.Instance;
-            shellViewModel.Shutdown += ShellViewModelOnShutdown;
-            var shellWindow = new ShellWindow {DataContext = shellViewModel};
-            _notificationIcon = new NotificationIcon(shellViewModel.Notificator, shellWindow);
-            shellWindow.Show();
+            try
+            {
+                ShutdownMode = ShutdownMode.OnExplicitShutdown;
+                var shellViewModel = ShellViewModel.Instance;
+                shellViewModel.Shutdown += ShellViewModelOnShutdown;
+                var shellWindow = new ShellWindow {DataContext = shellViewModel};
+                _notificationIcon = new NotificationIcon(shellViewModel.Notificator, shellWindow);
+                shellWindow.Show();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Unhandled error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private NotificationIcon _notificationIcon;

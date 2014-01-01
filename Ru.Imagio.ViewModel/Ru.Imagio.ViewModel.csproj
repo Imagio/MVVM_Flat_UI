@@ -59,6 +59,9 @@
     <Compile Include="Crypto\PasswordEncoder.cs" />
     <Compile Include="Crypto\PasswordHash.cs" />
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Notifications\NotificationAdapter.cs" />
+    <Compile Include="Notifications\NotificationItem.cs" />
+    <Compile Include="Notifications\NotificationType.cs" />
     <Compile Include="Notificator.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="SignViewModel.cs" />

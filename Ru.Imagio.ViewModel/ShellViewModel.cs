@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Ru.Imagio.Model;
+using Ru.Imagio.ViewModel.Notifications;
 
 namespace Ru.Imagio.ViewModel
 {
@@ -127,6 +129,16 @@ namespace Ru.Imagio.ViewModel
                     OnPropertyChanged("ActiveWorkspace");
                 }, o => IsSigned()));
             }
+        }
+
+        public ICollection<NotificationItem> Notifications
+        {
+            get { return NotificationAdapter.GetNotifications(); }
+        }
+
+        public void AddNotification(string message, NotificationType notificationType = NotificationType.Notice)
+        {
+            NotificationAdapter.AddNotification(message, notificationType);
         }
     }
 }
