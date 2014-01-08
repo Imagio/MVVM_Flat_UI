@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Forms;
 using Ru.Imagio.ViewModel;
 
@@ -71,6 +64,7 @@ namespace Ru.Imagio.View.Controls
 
         private void ShowMainWindow()
         {
+            _notificator.IsWindowVisible = true;
             // Показать окно (и перенести его на передний план, если оно уже видимо) . 
             if (_mainWindow.WindowState == WindowState.Minimized)
                 _mainWindow.WindowState = WindowState.Normal;

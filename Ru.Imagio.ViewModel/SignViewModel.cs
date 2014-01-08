@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Ru.Imagio.Model;
 using Ru.Imagio.ViewModel.Crypto;
@@ -39,13 +37,13 @@ namespace Ru.Imagio.ViewModel
         {
             get
             {
-                return _signCommand ?? (_signCommand = new AsyncDelegateCommand(o =>
+                return _signCommand ?? (_signCommand = new AsyncDelegateCommand<int>(o =>
                 {
                     var password = Password ?? "";
                     var userName = UserName ?? "";
                     var hashPassword = PasswordHash.CalcPasswordHash(password);
 
-                    var userId = 0;
+                    int userId;
 
                     using (var context = new DocsContext())
                     {
@@ -53,11 +51,11 @@ namespace Ru.Imagio.ViewModel
                                                                              acc.UserName == userName &&
                                                                              acc.Password == hashPassword);
                         if (account == null)
-                            return;
+                            return 0;
                         userId = account.Id;
                     }
 
-                    var signData = new CryptoSign()
+                    var signData = new CryptoSign
                     {
                         RememberMe = IsRememberMe,
                     };
@@ -70,19 +68,18 @@ namespace Ru.Imagio.ViewModel
 
                     CryptoSignStore.Save(signData);
 
-                    OnSigned(userId);
-                }, exception: Exception));
+                    return userId;
+                }, completed: result =>
+                {
+                    if (result == 0)
+                        ShellViewModel.Instance.AddNotification("Неправильное имя пользователя или пароль", NotificationType.Error);
+                    else
+                        OnSigned(result);
+                }, exception: ShellViewModel.Instance.Exception));
             }
         }
 
-        private void Exception(Exception exception)
-        {
-            if (exception == null)
-                return;
-            ShellViewModel.Instance.AddNotification(
-                exception.InnerException == null ? exception.Message : exception.InnerException.Message,
-                NotificationType.Error);
-        }
+        
     }
 
     public class SignedEventArgs : EventArgs

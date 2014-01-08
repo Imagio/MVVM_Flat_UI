@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Ru.Imagio.ViewModel.Annotations;
 
 namespace Ru.Imagio.ViewModel

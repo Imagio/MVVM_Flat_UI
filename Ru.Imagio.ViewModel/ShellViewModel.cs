@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Text;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -67,7 +66,11 @@ namespace Ru.Imagio.ViewModel
                     notification.AppendLine(String.Format("№{0}\t{1}\tот {2:d}", document.DocumentNumber, document.Name, document.Date));
                 }
             }
-            Notificator.ShowNotify(notification.ToString());
+
+            if (Notificator.IsWindowVisible)
+                AddNotification(notification.ToString());
+            else
+                Notificator.ShowNotify(notification.ToString());
         }
 
         public int UserID { get; private set; }
@@ -139,6 +142,15 @@ namespace Ru.Imagio.ViewModel
         public void AddNotification(string message, NotificationType notificationType = NotificationType.Notice)
         {
             NotificationAdapter.AddNotification(message, notificationType);
+        }
+
+        public void Exception(Exception exception)
+        {
+            if (exception == null)
+                return;
+            AddNotification(
+                exception.InnerException == null ? exception.Message : exception.InnerException.Message,
+                NotificationType.Error);
         }
     }
 }

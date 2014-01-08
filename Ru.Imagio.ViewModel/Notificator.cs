@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Ru.Imagio.ViewModel
 {
@@ -48,6 +45,7 @@ namespace Ru.Imagio.ViewModel
             if (handler != null) handler(this, new IconVisibilityEventArgs(iconVisibility));
         }
 
+        public bool IsWindowVisible { get; set; }
 
         public void TryShutdown()
         {

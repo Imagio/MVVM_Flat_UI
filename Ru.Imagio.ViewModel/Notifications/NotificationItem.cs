@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -11,7 +9,14 @@ namespace Ru.Imagio.ViewModel.Notifications
     {
         public event EventHandler Close;
 
-        private static readonly TimeSpan DefaultSpan = new TimeSpan(0, 0, 0, 10);
+        private static readonly Dictionary<NotificationType, TimeSpan> DefaultTimeSpans = new Dictionary
+            <NotificationType, TimeSpan>
+        {
+            {NotificationType.Error,  new TimeSpan(0, 0, 0, 5)},
+            {NotificationType.Notice,  new TimeSpan(0, 0, 0, 10)},
+            {NotificationType.Success,  new TimeSpan(0, 0, 0, 5)},
+            {NotificationType.Warning,  new TimeSpan(0, 0, 0, 5)},
+        };
 
         protected virtual void OnClose()
         {
@@ -24,7 +29,7 @@ namespace Ru.Imagio.ViewModel.Notifications
         {
             Message = message;
             NotificationType = notificationType;
-            var timer = new DispatcherTimer { Interval = span ?? DefaultSpan };
+            var timer = new DispatcherTimer { Interval = span ?? DefaultTimeSpans[NotificationType] };
             timer.Tick += (sender, args) => OnClose();
             timer.Start();
         }

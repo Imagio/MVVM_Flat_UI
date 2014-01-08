@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using MySql.Data.Entity;
 using MySql.Data.MySqlClient;
 
@@ -13,10 +9,16 @@ namespace Ru.Imagio.Model
     {
         public static string ConnectionString = new MySqlConnectionStringBuilder
         {
+            /*
             Server = "192.168.0.48",
             UserID = "doc_client",
             Database = "docs",
             Password = "oxT5BQ7i827K5teg98Zp",
+             */
+            Server = "localhost",
+            UserID = "root",
+            Database = "doc_reg",
+            Password = "root",
             CharacterSet = "utf8"
         }.ConnectionString;
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection.Emit;
 using System.Windows;
 using Ru.Imagio.View;
 using Ru.Imagio.View.Controls;
@@ -21,7 +20,9 @@ namespace Ru.Imagio.Main
                 var shellViewModel = ShellViewModel.Instance;
                 shellViewModel.Shutdown += ShellViewModelOnShutdown;
                 var shellWindow = new ShellWindow {DataContext = shellViewModel};
-                _notificationIcon = new NotificationIcon(shellViewModel.Notificator, shellWindow);
+                var notificationIcon = new NotificationIcon(shellViewModel.Notificator, shellWindow);
+                notificationIcon.Show();
+                shellViewModel.Notificator.IsWindowVisible = true;
                 shellWindow.Show();
             }
             catch (Exception exception)
@@ -29,8 +30,6 @@ namespace Ru.Imagio.Main
                 MessageBox.Show(exception.Message, "Unhandled error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        private NotificationIcon _notificationIcon;
 
         private static void ShellViewModelOnShutdown(object sender, EventArgs eventArgs)
         {

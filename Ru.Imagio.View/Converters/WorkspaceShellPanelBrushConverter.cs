@@ -1,11 +1,7 @@
 ﻿
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -13,7 +9,7 @@ namespace Ru.Imagio.View.Converters
 {
     public class WorkspaceShellPanelBrushConverter: IValueConverter
     {
-        private static List<Brush> brushes = new List<Brush>
+        private static readonly List<Brush>  Brushes = new List<Brush>
         {
             new SolidColorBrush(Color.FromRgb(0x00, 0x72, 0xC6)),
             new SolidColorBrush(Color.FromRgb(0x2f, 0x96, 0xb4)),
@@ -27,9 +23,9 @@ namespace Ru.Imagio.View.Converters
             int index;
             if (Int32.TryParse(value.ToString(), out index))
             {
-                return brushes[index % brushes.Count];
+                return Brushes[index % Brushes.Count];
             }
-            return Brushes.Black;
+            return System.Windows.Media.Brushes.Black;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
